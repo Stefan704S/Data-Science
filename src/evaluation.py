@@ -1,5 +1,7 @@
 # Elbow Curve Visualization for K-Means Clustering
 
+import matplotlib.pyplot as plt
+
 def plot_elbow_curve(k_values, scores, title, save_path=None):
     plt.figure()
     plt.plot(list(k_values), scores, marker="o")
