@@ -131,3 +131,13 @@ plot_pca_clusters(
 from src.evaluation import time
 
 time(df=data_clustered, save_path="results/clusters_over_time.png")
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# Call the fucntion to check the vif for the remaining variables
+
+from src.models import vif
+
+vif_table = vif(data_clustered, variables_1)
+print("\nVif test :")
+print(vif_table.round(2))

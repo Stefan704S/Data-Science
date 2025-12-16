@@ -77,3 +77,24 @@ def build_clustered_data(data: pd.DataFrame) -> pd.DataFrame:
 
 
 #-----------------------------------------------------------------------------------------------------------------------------
+# Testing the multicolinearity between the variables 
+
+import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+
+def vif(data_clustered: pd.DataFrame, x_vars):
+    
+    # Calculates the VIF for the specified variables. Returns a DataFrame with Variable and VIF.
+    
+    X_vif = sm.add_constant(data_clustered[x_vars])
+    vif_table = pd.DataFrame(
+        {
+            "Variable": X_vif.columns,
+            "VIF": [
+                variance_inflation_factor(X_vif.values, i)
+                for i in range(X_vif.shape[1])
+            ],
+        }
+    )
+    return vif_table
