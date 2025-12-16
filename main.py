@@ -94,3 +94,20 @@ anova(data, cluster_col="Cluster_1", variables=variables_1)
 sil_1 = silhouette(x_new_scaled, labels_1)
 print(sil_1)
 
+
+#------------------------------------------------------------------------------------------------------------------------------
+# Analysis of the clustered dataset
+
+from src.models import build_clustered_data
+
+data_clustered = build_clustered_data(data)
+print(data_clustered.head())
+
+
+cluster_counts = data_clustered["Cluster_1"].value_counts().sort_index()
+print(cluster_counts)
+
+
+variables_1 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF"]
+cluster_means = data_clustered.groupby("Cluster_1")[variables_1].mean()
+print(cluster_means)

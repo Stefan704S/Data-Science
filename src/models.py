@@ -60,3 +60,20 @@ from sklearn.metrics import silhouette_score
 
 def silhouette(X, labels):
     return silhouette_score(X, labels)
+
+
+#------------------------------------------------------------------------
+# Adding for each observations the corresponding clusters
+
+def build_clustered_data(data: pd.DataFrame) -> pd.DataFrame:
+
+    # This function allows you to create, from the initial database, a new dataset in which the cluster corresponding to each observation is added.
+
+    selected_vars = ["Dates", "Cluster_1", "3Mth", "10Yd", "Inf", "Unmp", "CHF"]
+    df = data[selected_vars].copy()
+    df["Dates"] = pd.to_datetime(df["Dates"])
+    df = df.sort_values("Dates")
+    return df
+
+
+#-----------------------------------------------------------------------------------------------------------------------------
