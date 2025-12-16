@@ -128,6 +128,6 @@ plot_pca_clusters(
 #-------------------------------------------------------------------------------------------------------------------------------
 # Ploting the cluster over time
 
-from src.models import time
+from src.evaluation import time
 
 time(df=data_clustered, save_path="results/clusters_over_time.png")
