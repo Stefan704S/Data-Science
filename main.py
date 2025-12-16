@@ -138,6 +138,16 @@ time(df=data_clustered, save_path="results/clusters_over_time.png")
 
 from src.models import vif
 
-vif_table = vif(data_clustered, variables_1)
+# Hypothesis 0
+
+variables_vif_0 = ["3Mth", "10Yd", "Unmp", "CHF"]
+vif_table = vif(data_clustered, variables_vif_0)
+print("\nVif test :")
+print(vif_table.round(2))
+
+# Hypothesis 1
+
+variables_vif_1 = ["3Mth", "Unmp", "CHF"]
+vif_table = vif(data_clustered, variables_vif_1)
 print("\nVif test :")
 print(vif_table.round(2))
