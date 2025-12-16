@@ -111,3 +111,15 @@ print(cluster_counts)
 variables_1 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF"]
 cluster_means = data_clustered.groupby("Cluster_1")[variables_1].mean()
 print(cluster_means)
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# Ploting PCA with the function in th evaluation 
+
+from src.evaluation import plot_pca_clusters
+
+plot_pca_clusters(
+        x_scaled=x_new_scaled,
+        labels=labels_1,
+        kmeans_model=kmeans_1,
+        save_path="results/pca_clusters_macro.png",)
