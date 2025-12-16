@@ -123,3 +123,11 @@ plot_pca_clusters(
         labels=labels_1,
         kmeans_model=kmeans_1,
         save_path="results/pca_clusters_macro.png",)
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# Ploting the cluster over time
+
+from src.models import time
+
+time(df=data_clustered, save_path="results/clusters_over_time.png")
