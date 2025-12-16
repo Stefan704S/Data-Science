@@ -12,3 +12,6 @@ def plot_elbow_curve(k_values, scores, title, save_path=None):
     if save_path is not None:
         plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
