@@ -139,15 +139,26 @@ time(df=data_clustered, save_path="results/clusters_over_time.png")
 from src.models import vif
 
 # Hypothesis 0
-
 variables_vif_0 = ["3Mth", "10Yd", "Unmp", "CHF"]
 vif_table = vif(data_clustered, variables_vif_0)
 print("\nVif test :")
 print(vif_table.round(2))
 
-# Hypothesis 1
 
+# Hypothesis 1
 variables_vif_1 = ["3Mth", "Unmp", "CHF"]
 vif_table = vif(data_clustered, variables_vif_1)
 print("\nVif test :")
 print(vif_table.round(2))
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# Call the function to do the regression
+
+from src.models import ols
+
+x = ['3Mth', 'Unmp', 'CHF']
+y = 'Inf'
+
+ols_0 = ols(df=data_clustered, Y=y, X=x)
+print(ols_0.round(4))

@@ -98,3 +98,47 @@ def vif(data_clustered: pd.DataFrame, x_vars):
         }
     )
     return vif_table
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# Computing the Regression 
+
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+from statsmodels.stats.diagnostic import het_breuschpagan
+
+def ols(df, Y, X):
+    
+    # This function groups observations by cluster and estimates an OLS linear regression for each cluster. It returns the coefficients, p-values, R^2, and a test for heteroscedasticity.
+
+    summary_table = []
+
+    for c in sorted(df["Cluster_1"].unique()):
+        subset = df[df["Cluster_1"] == c]
+
+        x_var= sm.add_constant(subset[X])
+        y_var = subset[Y]
+
+        model = sm.OLS(y_var, x_var).fit()
+        bp_test = het_breuschpagan(model.resid, model.model.exog)
+
+        summary_table.append(
+            {
+                "Intercept": model.params["const"],
+                "Beta (3Mth)": model.params.get("3Mth", np.nan),
+                "Pval (3Mth)": model.pvalues.get("3Mth", np.nan),
+                "Beta (Unmp)": model.params.get("Unmp", np.nan),
+                "Pval (Unmp)": model.pvalues.get("Unmp", np.nan),
+                "Beta (CHF)": model.params.get("CHF", np.nan),
+                "Pval (CHF)": model.pvalues.get("CHF", np.nan),
+                "R²": model.rsquared,
+                "Adj R²": model.rsquared_adj,
+                "BP p-value": bp_test[1],
+                "N obs": int(model.nobs),
+            }
+        )
+
+    summary_df = pd.DataFrame(summary_table)
+    return summary_df
+
