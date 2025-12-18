@@ -63,7 +63,7 @@ def plot_pca_clusters(x_scaled, labels, kmeans_model, save_path=None):
     plt.close()
 
 
-#---------------------------------------------------------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------------------------------------------------------
 # Build the The different macro regimes according to clusters over time
 
 import matplotlib.pyplot as plt

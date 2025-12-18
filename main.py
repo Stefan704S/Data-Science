@@ -1,4 +1,5 @@
-﻿# 1) Importing the data and visualization
+﻿# Main.py
+# 1) Importing the data and visualization
 
 from src.data_loader import data_load
 
@@ -47,11 +48,14 @@ data["Cluster_0"] = labels_0
 
 # Anova test
 variables_0 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF", "GDP", "SMI"]
-anova(data, cluster_col="Cluster_0", variables=variables_0)
+anova_h0 = anova(data, cluster_col="Cluster_0", variables=variables_0)
+print(anova_h0)
+anova_h0.to_excel("results/Anova_0.xlsx", index=False)
 
 # Silhouette test
 sil_0 = silhouette(x_full_scaled, labels_0)
 print(sil_0)
+sil_0.to_excel("results/Sil_h0.xlsx", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -88,11 +92,14 @@ data["Cluster_1"] = labels_1
 
 # Anova test
 variables_1 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF"]
-anova(data, cluster_col="Cluster_1", variables=variables_1)
+anova_1 = anova(data, cluster_col="Cluster_1", variables=variables_1)
+print(anova_1)
+anova_1.to_excel("results/Anova_h1.xlsx", index=False)
 
 # Silhouette test
 sil_1 = silhouette(x_new_scaled, labels_1)
 print(sil_1)
+sil_1.to_excel("results/Sil_h1.xlsx", index=False)
 
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -111,6 +118,7 @@ print(cluster_counts)
 variables_1 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF"]
 cluster_means = data_clustered.groupby("Cluster_1")[variables_1].mean()
 print(cluster_means)
+cluster_means.to_excel("results/Cluster_means.xlsx", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -140,16 +148,18 @@ from src.models import vif
 
 # Hypothesis 0
 variables_vif_0 = ["3Mth", "10Yd", "Unmp", "CHF"]
-vif_table = vif(data_clustered, variables_vif_0)
+vif_table_0= vif(data_clustered, variables_vif_0)
 print("\nVif test :")
-print(vif_table.round(2))
+print(vif_table_0.round(2))
+vif_table_0.to_excel("results/Vif_h0.xlsx", index=False)
 
 
 # Hypothesis 1
 variables_vif_1 = ["3Mth", "Unmp", "CHF"]
-vif_table = vif(data_clustered, variables_vif_1)
+vif_table_1 = vif(data_clustered, variables_vif_1)
 print("\nVif test :")
-print(vif_table.round(2))
+print(vif_table_1.round(2))
+vif_table_1.to_excel("results/Vif_h1.xlsx", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -162,12 +172,14 @@ y = 'Inf'
 
 ols_table, models = ols(df=data_clustered, Y=y, X=x)
 print(ols_table)
+ols_table.to_excel("results/OLS_table.xlsx", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
-# Call the function for the robust test
+# Call the function for the robustness test
 
 from src.models import robust
 
 rob_table = robust(data_clustered, Y=y, X=x, cov_type="HC3")
 print(rob_table.round(4))
+rob_table.to_excel("results/Robustness test.xlsx", index=False)

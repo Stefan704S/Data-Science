@@ -42,6 +42,7 @@ from scipy.stats import f_oneway
 
 
 def anova(data : pd.DataFrame, cluster_col: str, variables):
+    results = []
   
 # This function performs a one-way ANOVA for each specified variable, to test whether the means differ significantly between clusters. It displays the p-value associated with each test.
 
@@ -49,9 +50,18 @@ def anova(data : pd.DataFrame, cluster_col: str, variables):
         groups = [
             data[data[cluster_col] == k][var]
             for k in sorted(data[cluster_col].unique())
-        ]
+            ]
+        
         stat, p = f_oneway(*groups)
+        results.append({
+            "Variable": var,
+            "F-statistic": stat,
+            "p-value": p})
+
+
         print(f"{var}: p-value = {p:.4f}")
+
+    return pd.DataFrame(results)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -59,7 +69,8 @@ def anova(data : pd.DataFrame, cluster_col: str, variables):
 from sklearn.metrics import silhouette_score
 
 def silhouette(X, labels):
-    return silhouette_score(X, labels)
+    result_sil = silhouette_score(X, labels)
+    return pd.DataFrame({"Silhouette score" : [result_sil]})
 
 
 #------------------------------------------------------------------------
@@ -143,16 +154,16 @@ def ols(df, Y, X):
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
-# 
-
-import numpy as np
+# Computing the robustness test
 
 import numpy as np
 import pandas as pd
 import statsmodels.api as sm
 
-def robust(df, Y, X, cov_type="HC1"):
+def robust(df, Y, X, cov_type):
     robust_models = []
+
+    # This function applies the robust test for each cluster to correct the initial p-values. To do this, we use two loops, the first performing regression on the clusters and the second performing robustness testing for each cluster.
 
     for c in sorted(df["Cluster_1"].dropna().unique()):
         subset = df[df["Cluster_1"] == c].dropna(subset=[Y] + list(X))
