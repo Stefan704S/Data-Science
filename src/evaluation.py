@@ -115,3 +115,51 @@ def time(df, save_path=None):
     if save_path is not None:
         plt.savefig(save_path, dpi=300, bbox_inches="tight")
     plt.close()
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+#
+
+def regression(data, models, Y, X, save_path=None,):
+    
+    fig, axs = plt.subplots(1, 3, figsize=(18, 5), sharey=True)
+
+    for i, cluster in enumerate(sorted(models.keys())):
+        model = models[cluster]
+
+        y_pred = model.fittedvalues         
+        y_var = model.model.endog           
+
+        ax = axs[i]
+
+        ax.scatter(
+            y_pred,
+            y_var,
+            alpha=0.6,
+            color="#1f77b4",
+            edgecolor="black")
+
+        ax.plot(
+            [y_pred.min(), y_pred.max()],
+            [y_pred.min(), y_pred.max()],
+            color="red",
+            linestyle="--")
+
+        ax.set_title(f"Cluster {cluster}", fontsize=13, weight="bold")
+        ax.set_xlabel("Predicted Inflation")
+        if i == 0:
+            ax.set_ylabel("Observed Inflation")
+        ax.grid(True, linestyle="--", alpha=0.8)
+
+    plt.suptitle(
+        "Multiple regression: observed vs predicted inflation by cluster",
+        fontsize=16,
+        weight="bold",
+        y=1,
+    )
+    plt.tight_layout()
+
+    if save_path is not None:
+        plt.savefig(save_path, dpi=300, bbox_inches="tight")
+
+    plt.close()

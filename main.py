@@ -24,7 +24,8 @@ from src.models import (
 from src.evaluation import (
     plot_elbow_curve,
     plot_pca_clusters,
-    time
+    time,
+    regression
 )
 
 
@@ -181,3 +182,11 @@ ols_table.to_excel("results/OLS_table.xlsx", index=False)
 rob_table = robust(data_clustered, Y=y, X=x, cov_type="HC3")
 print(rob_table.round(4))
 rob_table.to_excel("results/Robustness_test.xlsx", index=False)
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# Call the function to plot the regression
+# We plot regression with 3mth, Unmp, and CHF.
+
+regression(data=data_clustered, models=models, Y=y, X=x, save_path="results/regression")
+

@@ -123,6 +123,7 @@ def ols(df, Y, X):
     
     # This function groups observations by cluster and estimates an OLS linear regression for each cluster. It returns the coefficients, p-values, R^2, and a test for heteroscedasticity.
 
+    models = {}
     summary_table = []
 
     for c in sorted(df["Cluster_1"].unique()):
@@ -132,6 +133,7 @@ def ols(df, Y, X):
         y_var = subset[Y]
 
         model = sm.OLS(y_var, x_var).fit()
+        models[c] = model
         bp_test = het_breuschpagan(model.resid, model.model.exog)
 
         summary_table.append(
@@ -150,7 +152,7 @@ def ols(df, Y, X):
         )
 
     summary_df = pd.DataFrame(summary_table)
-    return summary_df, model
+    return summary_df, models
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
