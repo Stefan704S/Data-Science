@@ -133,12 +133,42 @@ def ols(df, Y, X):
                 "Beta (CHF)": model.params.get("CHF", np.nan),
                 "Pval (CHF)": model.pvalues.get("CHF", np.nan),
                 "R²": model.rsquared,
-                "Adj R²": model.rsquared_adj,
                 "BP p-value": bp_test[1],
                 "N obs": int(model.nobs),
             }
         )
 
     summary_df = pd.DataFrame(summary_table)
-    return summary_df
+    return summary_df, model
 
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# 
+
+import numpy as np
+
+import numpy as np
+import pandas as pd
+import statsmodels.api as sm
+
+def robust(df, Y, X, cov_type="HC1"):
+    robust_models = []
+
+    for c in sorted(df["Cluster_1"].dropna().unique()):
+        subset = df[df["Cluster_1"] == c].dropna(subset=[Y] + list(X))
+
+        X_mat = sm.add_constant(subset[X], has_constant="add")
+        y_vec = subset[Y]
+
+        model = sm.OLS(y_vec, X_mat).fit()
+        res = model.get_robustcov_results(cov_type=cov_type)
+
+        names = list(model.params.index)
+
+        row = {"Cluster": c}
+        for i, name in enumerate(names):
+            row[f"Robust Pval ({name})"] = float(res.pvalues[i]) if i < len(res.pvalues) else np.nan
+
+        robust_models.append(row)
+
+    return pd.DataFrame(robust_models).sort_values("Cluster").reset_index(drop=True)

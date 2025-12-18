@@ -160,5 +160,14 @@ from src.models import ols
 x = ['3Mth', 'Unmp', 'CHF']
 y = 'Inf'
 
-ols_0 = ols(df=data_clustered, Y=y, X=x)
-print(ols_0.round(4))
+ols_table, models = ols(df=data_clustered, Y=y, X=x)
+print(ols_table)
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# Call the function for the robust test
+
+from src.models import robust
+
+rob_table = robust(data_clustered, Y=y, X=x, cov_type="HC3")
+print(rob_table.round(4))
