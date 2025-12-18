@@ -1,30 +1,44 @@
 ﻿# Main.py
-# 1) Importing the data and visualization
-
-from src.data_loader import data_load
-
-data = data_load("data/raw/data.xlsx")
-print(data)
-
-
-# ----------------------------------------------------------------------------------------------
-# 2) Data visualization
-
-print(data.describe())
-
-
-# ----------------------------------------------------------------------------------------------
-#Results for the hypothesis 0
+#-------------------------------------------------------------------------------------------------------------------------------
+# Librairies
 
 from src.models import compute_elbow_scores
-from src.evaluation import plot_elbow_curve
-from src.data_loader import standardize
 from src.models import kmeans
 from src.models import anova
 from src.models import silhouette
 
+# Local imports
+from src.data_loader import data_load, standardize
 
-# 5)   Plot WCSS and choose k*
+from src.models import (
+    compute_elbow_scores,
+    kmeans,
+    anova,
+    silhouette,
+    build_clustered_data,
+    vif,
+    ols,
+    robust
+)
+
+from src.evaluation import (
+    plot_elbow_curve,
+    plot_pca_clusters,
+    time
+)
+
+
+#-------------------------------------------------------------------------------------------------------------------------------
+# Importing the data and visualization.
+
+data = data_load("data/raw/data.xlsx")
+print(data)
+
+# ----------------------------------------------------------------------------------------------
+# Results for the hypothesis 0
+# Plot WCSS and choose k*
+
+# In this part of the code, we select the variables we want to analyze for KMeans. To do this, we standardize them, calculate the Elbow score, and implement it in the graph.
 
 vars_h0 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF", "GDP", "SMI"]
 x_full_scaled = standardize(data[vars_h0])
@@ -37,12 +51,15 @@ plot_elbow_curve(
     k_values=k_range,
     scores=score_h0,
     title="Elbow Method for Optimal k (full variables)",
-    save_path="results/elbow_full.png",
+    save_path="results/elbow_full.png"
 )
 
-# 6 Run Anova and Silhouette test
 
+# Run Anova and Silhouette test
 # K-means with k = 3 and all the variables
+
+# In this part of the code, we test clustering. We want to know if the variables are useful in determining the cluster and the quality of the cluster through its silhouette test. We therefore refer to “elbow_full” to determine the number n_clusters in kmeans.
+
 labels_0, kmeans_0 = kmeans(x_full_scaled, n_clusters=3)
 data["Cluster_0"] = labels_0
 
@@ -59,16 +76,10 @@ sil_0.to_excel("results/Sil_h0.xlsx", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
-#Results for the hypothesis 1
+# Results for the hypothesis 1
+# Plot WCSS and choose k*
 
-from src.models import compute_elbow_scores
-from src.evaluation import plot_elbow_curve
-from src.data_loader import standardize
-from src.models import kmeans
-from src.models import anova
-from src.models import silhouette
-
-# 7)   Plot WCSS and choose k*
+# Same procedure as in hypothesis 0, only the variables change.
 
 vars_h1 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF"]
 x_new_scaled = standardize(data[vars_h1])
@@ -84,8 +95,8 @@ plot_elbow_curve(
     save_path="results/elbow_new.png",
 )
 
-# 8 Run Anova and Silhouette test
 
+# Run Anova and Silhouette test
 # K-means with k = 3 and all the variables
 labels_1, kmeans_1 = kmeans(x_new_scaled, n_clusters=3)
 data["Cluster_1"] = labels_1
@@ -104,16 +115,14 @@ sil_1.to_excel("results/Sil_h1.xlsx", index=False)
 
 #------------------------------------------------------------------------------------------------------------------------------
 # Analysis of the clustered dataset
-
-from src.models import build_clustered_data
+# Saving the relevant infos
 
 data_clustered = build_clustered_data(data)
 print(data_clustered.head())
 
-
 cluster_counts = data_clustered["Cluster_1"].value_counts().sort_index()
 print(cluster_counts)
-
+cluster_counts.to_excel("results/Cluster_counts.xlsx", index=False)
 
 variables_1 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF"]
 cluster_means = data_clustered.groupby("Cluster_1")[variables_1].mean()
@@ -124,27 +133,18 @@ cluster_means.to_excel("results/Cluster_means.xlsx", index=False)
 #-------------------------------------------------------------------------------------------------------------------------------
 # Ploting PCA with the function in th evaluation 
 
-from src.evaluation import plot_pca_clusters
-
-plot_pca_clusters(
-        x_scaled=x_new_scaled,
-        labels=labels_1,
-        kmeans_model=kmeans_1,
-        save_path="results/pca_clusters_macro.png",)
+plot_pca_clusters( x_scaled=x_new_scaled, labels=labels_1, kmeans_model=kmeans_1, save_path="results/pca_clusters_macro.png",)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
 # Ploting the cluster over time
-
-from src.evaluation import time
 
 time(df=data_clustered, save_path="results/clusters_over_time.png")
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
 # Call the fucntion to check the vif for the remaining variables
-
-from src.models import vif
+# We suspect a problem of multicollinearity in the data, particularly between 3mth and 10yd, so we test once with all the data and a second time removing 10yd.
 
 # Hypothesis 0
 variables_vif_0 = ["3Mth", "10Yd", "Unmp", "CHF"]
@@ -164,8 +164,7 @@ vif_table_1.to_excel("results/Vif_h1.xlsx", index=False)
 
 #-------------------------------------------------------------------------------------------------------------------------------
 # Call the function to do the regression
-
-from src.models import ols
+# We perform regression with 3mth, Unmp, and CHF, removing 10yd due to multicollinearity.
 
 x = ['3Mth', 'Unmp', 'CHF']
 y = 'Inf'
@@ -177,9 +176,8 @@ ols_table.to_excel("results/OLS_table.xlsx", index=False)
 
 #-------------------------------------------------------------------------------------------------------------------------------
 # Call the function for the robustness test
-
-from src.models import robust
+# We use a robustness test with the aim of potentially improving p-values, due to the presence of heteroscedasticity. We use the “HC3” test because we have a small cluster of 33.
 
 rob_table = robust(data_clustered, Y=y, X=x, cov_type="HC3")
 print(rob_table.round(4))
-rob_table.to_excel("results/Robustness test.xlsx", index=False)
+rob_table.to_excel("results/Robustness_test.xlsx", index=False)
