@@ -1,6 +1,17 @@
-﻿# Main.py
-#-------------------------------------------------------------------------------------------------------------------------------
-# Librairies
+﻿'''
+--------------------------------------------------------------------------------------------------------------------------------------
+                                                            Main.py
+--------------------------------------------------------------------------------------------------------------------------------------
+'''
+
+
+'''
+--------------------------------------------------------------------------------------------------------------------------------------
+                                                            Import
+--------------------------------------------------------------------------------------------------------------------------------------
+'''
+
+# Libraries
 
 from src.models import compute_elbow_scores
 from src.models import kmeans
@@ -8,7 +19,9 @@ from src.models import anova
 from src.models import silhouette
 
 # Local imports
+
 from src.data_loader import data_load, standardize
+
 
 from src.models import (
     compute_elbow_scores,
@@ -18,24 +31,32 @@ from src.models import (
     build_clustered_data,
     vif,
     ols,
-    robust
-)
+    robust)
+
 
 from src.evaluation import (
     plot_elbow_curve,
     plot_pca_clusters,
     time,
-    regression
-)
+    regression,
+    hetero_plot)
 
 
-#-------------------------------------------------------------------------------------------------------------------------------
+'''
+--------------------------------------------------------------------------------------------------------------------------------------
+                                                        Data import
+--------------------------------------------------------------------------------------------------------------------------------------
+'''
 # Importing the data and visualization.
 
 data = data_load("data/raw/data.xlsx")
 print(data)
 
-# ----------------------------------------------------------------------------------------------
+'''
+--------------------------------------------------------------------------------------------------------------------------------------
+                                                        Clustering
+--------------------------------------------------------------------------------------------------------------------------------------
+'''
 # Results for the hypothesis 0
 # Plot WCSS and choose k*
 
@@ -143,7 +164,11 @@ plot_pca_clusters( x_scaled=x_new_scaled, labels=labels_1, kmeans_model=kmeans_1
 time(df=data_clustered, save_path="results/clusters_over_time.png")
 
 
-#-------------------------------------------------------------------------------------------------------------------------------
+'''
+--------------------------------------------------------------------------------------------------------------------------------------
+                                                        Regressions (OLS)
+--------------------------------------------------------------------------------------------------------------------------------------
+'''
 # Call the fucntion to check the vif for the remaining variables
 # We suspect a problem of multicollinearity in the data, particularly between 3mth and 10yd, so we test once with all the data and a second time removing 10yd.
 
@@ -190,3 +215,8 @@ rob_table.to_excel("results/Robustness_test.xlsx", index=False)
 
 regression(data=data_clustered, models=models, Y=y, X=x, save_path="results/regression")
 
+
+#-------------------------------------------------------------------------------------------------------------------------------------
+# Call the function to plot the heteroscedasticity
+
+hetero_plot(data=data_clustered, models=models, Y=y, X=x, save_path="results/Hetero_plot")

@@ -1,22 +1,24 @@
-﻿# Importing data
+﻿# Data_loader.py
+#-------------------------------------------------------------------------------------------------------------------------------------
+# Importing librairies
 
 import pandas as pd
+import sklearn.preprocessing
+from sklearn.preprocessing import StandardScaler
 
 
-def data_load(path="data/raw/data.slsx"):
+#-------------------------------------------------------------------------------------------------------------------------------------
+# Importing the data
+
+def data_load(path="data/raw/data.xlsx"):
     data = pd.read_excel(path)
     return data
 
 
-#-------------------------------------------------------------------------------------------------------------------------------
-# Function to Standardization variables
-
-from sklearn.preprocessing import StandardScaler
-
+#-------------------------------------------------------------------------------------------------------------------------------------
+# Function for standardizing the data 
+# In this part of the code, we select the data we want to standardize, create a new matrix, and then add the standardized data from the initial database to it.
 
 def standardize(x: pd.DataFrame):
-
-    # Standardization of variables to test the first hypothesis. In this part of the code, we select the data we want to standardize, create a new matrix, and then add the standardized data from the initial database to it.
-
     scaler = StandardScaler()
     return scaler.fit_transform(x)
