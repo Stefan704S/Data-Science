@@ -73,7 +73,7 @@ plot_elbow_curve(
     k_values=k_range,
     scores=score_h0,
     title="Elbow Method for Optimal k (full variables)",
-    save_path="results/elbow_full.png"
+    save_path="results/plot/elbow_full.png"
 )
 
 
@@ -89,12 +89,12 @@ data["Cluster_0"] = labels_0
 variables_0 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF", "GDP", "SMI"]
 anova_h0 = anova(data, cluster_col="Cluster_0", variables=variables_0)
 print(anova_h0)
-anova_h0.to_excel("results/Anova_0.xlsx", index=False)
+anova_h0.to_csv("results/numeric/Anova_0.csv", index=False)
 
 # Silhouette test
 sil_0 = silhouette(x_full_scaled, labels_0)
 print(sil_0)
-sil_0.to_excel("results/Sil_h0.xlsx", index=False)
+sil_0.to_csv("results/numeric/Sil_h0.csv", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -114,7 +114,7 @@ plot_elbow_curve(
     k_values=k_range,
     scores=score_h1,
     title="Elbow Method for Optimal k (full variables)",
-    save_path="results/elbow_new.png",
+    save_path="results/plot/elbow_new.png",
 )
 
 
@@ -127,12 +127,12 @@ data["Cluster_1"] = labels_1
 variables_1 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF"]
 anova_1 = anova(data, cluster_col="Cluster_1", variables=variables_1)
 print(anova_1)
-anova_1.to_excel("results/Anova_h1.xlsx", index=False)
+anova_1.to_csv("results/numeric/Anova_h1.csv", index=False)
 
 # Silhouette test
 sil_1 = silhouette(x_new_scaled, labels_1)
 print(sil_1)
-sil_1.to_excel("results/Sil_h1.xlsx", index=False)
+sil_1.to_csv("results/numeric/Sil_h1.csv", index=False)
 
 
 #------------------------------------------------------------------------------------------------------------------------------
@@ -144,12 +144,12 @@ print(data_clustered.head())
 
 cluster_counts = data_clustered["Cluster_1"].value_counts().sort_index()
 print(cluster_counts)
-cluster_counts.to_excel("results/Cluster_counts.xlsx", index=False)
+cluster_counts.to_csv("results/numeric/Cluster_counts.csv", index=False)
 
 variables_1 = ["3Mth", "10Yd", "Inf", "Unmp", "CHF"]
 cluster_means = data_clustered.groupby("Cluster_1")[variables_1].mean()
 print(cluster_means)
-cluster_means.to_excel("results/Cluster_means.xlsx", index=False)
+cluster_means.to_csv("results/numeric/Cluster_means.csv", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -161,7 +161,7 @@ plot_pca_clusters( x_scaled=x_new_scaled, labels=labels_1, kmeans_model=kmeans_1
 #-------------------------------------------------------------------------------------------------------------------------------
 # Ploting the cluster over time
 
-time(df=data_clustered, save_path="results/clusters_over_time.png")
+time(df=data_clustered, save_path="results/plot/clusters_over_time.png")
 
 
 '''
@@ -177,7 +177,7 @@ variables_vif_0 = ["3Mth", "10Yd", "Unmp", "CHF"]
 vif_table_0= vif(data_clustered, variables_vif_0)
 print("\nVif test :")
 print(vif_table_0.round(2))
-vif_table_0.to_excel("results/Vif_h0.xlsx", index=False)
+vif_table_0.to_csv("results/numeric/Vif_h0.csv", index=False)
 
 
 # Hypothesis 1
@@ -185,7 +185,7 @@ variables_vif_1 = ["3Mth", "Unmp", "CHF"]
 vif_table_1 = vif(data_clustered, variables_vif_1)
 print("\nVif test :")
 print(vif_table_1.round(2))
-vif_table_1.to_excel("results/Vif_h1.xlsx", index=False)
+vif_table_1.to_csv("results/numeric/Vif_h1.csv", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -197,7 +197,7 @@ y = 'Inf'
 
 ols_table, models = ols(df=data_clustered, Y=y, X=x)
 print(ols_table)
-ols_table.to_excel("results/OLS_table.xlsx", index=False)
+ols_table.to_csv("results/numeric/OLS_table.csv", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
@@ -206,17 +206,17 @@ ols_table.to_excel("results/OLS_table.xlsx", index=False)
 
 rob_table = robust(data_clustered, Y=y, X=x, cov_type="HC3")
 print(rob_table.round(4))
-rob_table.to_excel("results/Robustness_test.xlsx", index=False)
+rob_table.to_csv("results/numeric/Robustness_test.csv", index=False)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------
 # Call the function to plot the regression
 # We plot regression with 3mth, Unmp, and CHF.
 
-regression(data=data_clustered, models=models, Y=y, X=x, save_path="results/regression")
+regression(data=data_clustered, models=models, Y=y, X=x, save_path="results/plot/regression")
 
 
 #-------------------------------------------------------------------------------------------------------------------------------------
 # Call the function to plot the heteroscedasticity
 
-hetero_plot(data=data_clustered, models=models, Y=y, X=x, save_path="results/Hetero_plot")
+hetero_plot(data=data_clustered, models=models, Y=y, X=x, save_path="results/plot/Hetero_plot")

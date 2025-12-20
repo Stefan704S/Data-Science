@@ -6,11 +6,11 @@ _Effectiveness of monetary policy according to the macroeconomic regime in place
 
 ## Academic context
 
-**Program**       : Master in Finance
-**University**    : University of Lausanne
-**Course**        : Data Science and Advanced Programming
-**Author**        : Stefan Stevanovic
-**Project Type**  : Individual Project
+- **Program:** Master in Finance  
+- **University:** University of Lausanne  
+- **Course:** Data Science and Advanced Programming  
+- **Author:** Stefan Stevanovic  
+- **Project Type:** Individual Project
 
 ---
 
