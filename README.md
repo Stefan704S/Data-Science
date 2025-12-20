@@ -65,6 +65,7 @@ The data are macroeconomic observations and come from the Swiss National Bank po
 
 # Project Structure
 
+```text
 project/
 │── main.py
 │── data/
@@ -74,7 +75,7 @@ project/
 │   ├── data_loader.py
 │   ├── models.py
 │   └── evaluation.py
-│── proposal
+│── proposal/
 │── README.md
 │── requirements.txt
 │── environment.yml
