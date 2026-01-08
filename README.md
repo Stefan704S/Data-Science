@@ -34,13 +34,14 @@ python -m venv .venv
 ```
 
 3. Activate the virtual environment
-# Windows (PowerShell)
+
 ```bash 
+# Windows (PowerShell)
 .\.venv\Scripts\Activate.ps1
 ```
 
-# macOS / Linux
 ```bash 
+# macOS / Linux
 source .venv/bin/activate
 ```
 
