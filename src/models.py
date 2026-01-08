@@ -122,7 +122,7 @@ def build_clustered_data(data: pd.DataFrame):
                                                         Multicollinearity (VIF)
 --------------------------------------------------------------------------------------------------------------------------------------
 '''
-    # Calculates the VIF for the specified variables. Returns a DataFrame with Variable and VIF.
+# Calculates the VIF for the specified variables. Returns a DataFrame with Variable and VIF.
 
 def vif(data_clustered: pd.DataFrame, x_vars):
 
@@ -140,7 +140,7 @@ def vif(data_clustered: pd.DataFrame, x_vars):
                                                         OLS Regression
 --------------------------------------------------------------------------------------------------------------------------------------
 '''
-    # This function groups observations by cluster and estimates an OLS linear regression for each cluster. It returns the coefficients, p-values, R^2, and a test for heteroscedasticity.
+# This function groups observations by cluster and estimates an OLS linear regression for each cluster. It returns the coefficients, p-values, R^2, and a test for heteroscedasticity.
 
 def ols(df, Y, X):
 

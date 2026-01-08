@@ -155,7 +155,7 @@ cluster_means.to_csv("results/numeric/Cluster_means.csv", index=False)
 #-------------------------------------------------------------------------------------------------------------------------------
 # Ploting PCA with the function in th evaluation 
 
-plot_pca_clusters( x_scaled=x_new_scaled, labels=labels_1, kmeans_model=kmeans_1, save_path="results/pca_clusters_macro.png",)
+plot_pca_clusters( x_scaled=x_new_scaled, labels=labels_1, kmeans_model=kmeans_1, save_path="results/plot/pca_clusters_macro.png",)
 
 
 #-------------------------------------------------------------------------------------------------------------------------------

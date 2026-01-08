@@ -46,6 +46,7 @@ def plot_elbow_curve(k_values, scores, title, save_path=None):
                                                         PCA Visualization
 --------------------------------------------------------------------------------------------------------------------------------------
 '''
+# Construction of a function that allows clusters to be visualized graphically. To do this, we reduce to two dimensions for 2D visualization. Implementation of all graph parameters. 
 
 def plot_pca_clusters(x_scaled, labels, kmeans_model, save_path=None):
 
@@ -94,6 +95,7 @@ def plot_pca_clusters(x_scaled, labels, kmeans_model, save_path=None):
                                         Build the different macro regimes over time
 --------------------------------------------------------------------------------------------------------------------------------------
 '''
+# We want to check the distribution of clusters over time, so we will set up a timeline on which we will represent each cluster observation. The goal is to see if the observations follow each other to form macro regimes.
 
 def time(df, save_path=None):
     fig, ax = plt.subplots(figsize=(10, 4))
@@ -144,9 +146,10 @@ def time(df, save_path=None):
                                                         Regression Plot
 --------------------------------------------------------------------------------------------------------------------------------------
 '''
+# Construction of a function that displays the regressions for each regime. To do this, we create a for loop in which we configure a model that we integrate for each cluster. This gives us an image with three regressions on the same line.
 
 def regression(data, models, Y, X, save_path=None):
-    fig, axs = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
+    fig, axs = plt.subplots(1, 3, figsize=(15, 6), sharey=True)
 
     for i, cluster in enumerate(sorted(models.keys())):
         model = models[cluster]
@@ -191,9 +194,10 @@ def regression(data, models, Y, X, save_path=None):
                                                 Heteroscedasticity Plot
 --------------------------------------------------------------------------------------------------------------------------------------
 '''
+# As with regressions, we want to observe how the residuals are distributed in the regressions. We also apply a for loop to iterate through each cluster. Single-line visualization.
 
 def hetero_plot(data, models, Y, X, save_path=None):
-    fig, axs = plt.subplots(1, 3, figsize=(15, 5), sharey=True)
+    fig, axs = plt.subplots(1, 3, figsize=(15, 6), sharey=True)
 
     for i, cluster in enumerate(sorted(models.keys())):
         model = models[cluster]
