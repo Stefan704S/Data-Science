@@ -23,22 +23,36 @@ The analysis uses data from the Swiss National Bank. These data cover a monthly 
 ## How to run the project locally
 
 1. Clone the GitHub repository
-   ```bash git clone https://github.com/Stefan704S/Data-Science.git
 
+```bash
+git clone https://github.com/Stefan704S/Data-Science.git
+```
 2. Create a virtual environment (venv)
-    ```bash python -m venv .venv
+
+```bash 
+python -m venv .venv
+```
 
 3. Activate the virtual environment
-   # Windows (PowerShell)
-    ```bash .\.venv\Scripts\Activate.ps1
-   # macOS / Linux
-    ```bash source .venv/bin/activate
+# Windows (PowerShell)
+```bash 
+.\.venv\Scripts\Activate.ps1
+```
+
+# macOS / Linux
+```bash 
+source .venv/bin/activate
+```
 
 4. Install the required dependencies
-    ```bash pip install -r requirements.txt
+```bash 
+pip install -r requirements.txt
+```
 
 5. Run the project
-    ```bash python main.py
+```bash 
+python main.py
+```
 
 ---
     
