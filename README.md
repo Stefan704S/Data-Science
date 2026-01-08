@@ -18,8 +18,30 @@ _Effectiveness of monetary policy according to the macroeconomic regime in place
 
 The aim of this project is to apply data science and econometrics tools to analyze the effectiveness of monetary policy across different macroeconomic regimes in Switzerland. This project therefore has two clear objectives: to demonstrate the use of Python by examining a specific topic, in this case the effectiveness of monetary policy.
 
-The analysis uses data from the Swiss National Bank. These data cover a monthly period from 1991 to 2024 (407 observations in total). 
+The analysis uses data from the Swiss National Bank. These data cover a monthly period from 1991 to 2024 (407 observations in total).
 
+## How to run the project locally
+
+1. Clone the GitHub repository
+   ```bash git clone https://github.com/Stefan704S/Data-Science.git
+
+2. Create a virtual environment (venv)
+    ```bash python -m venv .venv
+
+3. Activate the virtual environment
+   # Windows (PowerShell)
+    ```bash .\.venv\Scripts\Activate.ps1
+   # macOS / Linux
+    ```bash source .venv/bin/activate
+
+4. Install the required dependencies
+    ```bash pip install -r requirements.txt
+
+5. Run the project
+    ```bash python main.py
+
+---
+    
 ## Objective
 
     - Apply data science tools to a real macroeconomic dataset
@@ -71,6 +93,8 @@ project/
 │── data/
 │   └── raw/
 │       └── data.xlsx
+│        Data source/
+│       └── Raw files
 │── src/
 │   ├── data_loader.py
 │   ├── models.py
