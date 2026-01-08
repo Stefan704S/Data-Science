@@ -22,11 +22,13 @@ The analysis uses data from the Swiss National Bank. These data cover a monthly 
 
 ## How to run the project locally
 
-1. Clone the GitHub repository
+1. Clone the GitHub repository 
 
 ```bash
 git clone https://github.com/Stefan704S/Data-Science.git
+cd Data-Science
 ```
+
 2. Create a virtual environment (venv)
 
 ```bash 
